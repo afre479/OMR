@@ -6,7 +6,7 @@ import core.DisplayWindow;
 import processing.core.PImage; 
 
 public class FilterTest {
-    //testingn
+    //testingnn
     public static String currentFolder = System.getProperty("user.dir") + "/";
 
     public static void main(String[] args) {
