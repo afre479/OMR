@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.io.File;
-//test edit 2
+
+// Author: David Dobervich (this is my edit)
+// ANOTHER EDIT.
 public class OpticalMarkReaderMain {
     public static void main(String[] args) {
         String pathToPdf = fileChooser();
