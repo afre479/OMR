@@ -18,6 +18,10 @@ public class findAnswersFilter implements PixelFilter {
 
     public findAnswersFilter() {
         System.out.println("Filter running...");
+        data="";
+    }
+    public String getData(){
+        return data;
     }
 
     @Override
@@ -28,7 +32,7 @@ public class findAnswersFilter implements PixelFilter {
         for (int i = 1; i < questions.size()+1; i++) {
            data+="the answer to question "+i+" is "+findAnswer(questions.get(i-1), grid)+"\n";
         }
-        writeDataToFile("answers.txt", data);
+        //writeDataToFile("answers1.txt", data);
         return img;
     }
     public static void writeDataToFile(String filePath, String data) {

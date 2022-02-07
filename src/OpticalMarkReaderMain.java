@@ -20,7 +20,10 @@ public class OpticalMarkReaderMain {
             DImage img = new DImage(in);       // you can make a DImage from a PImage
             System.out.println("Running filter on page " +pg);
             findAnswersFilter filter = new findAnswersFilter();
+            writeDataToFile("answers.txt", "Answers for page "+pg);
             filter.processImage(img);
+            writeDataToFile("answers.txt", filter.getData());
+
         }
 
 
@@ -35,7 +38,20 @@ public class OpticalMarkReaderMain {
          */
 
     }
+    public static void writeDataToFile(String filePath, String data) {
+        try (FileWriter f = new FileWriter(filePath, true);
+             BufferedWriter b = new BufferedWriter(f);
+             PrintWriter writer = new PrintWriter(b);) {
 
+
+            writer.println(data);
+
+
+        } catch (IOException error) {
+            System.err.println("There was a problem writing to the file: " + filePath);
+            error.printStackTrace();
+        }
+    }
 
 
 
