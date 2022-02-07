@@ -61,7 +61,11 @@ public class findAnswersFilter implements PixelFilter {
         int count=0;
         for (int j = (int) y; j <y+yDist ; j++) {
             for (int k = (int) x; k <x+answerDist ; k++) {
-                if(grid[j][k]<30){
+                if(grid[j][k]<5){
+                    count+=3;
+                }else if(grid[j][k]<10){
+                    count+=2;
+                }else if(grid[j][k]<20){
                     count++;
                 }
             }

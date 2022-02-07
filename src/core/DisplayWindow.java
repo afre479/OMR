@@ -40,7 +40,7 @@ public class DisplayWindow extends PApplet {
     private boolean initiallyPaused = false;
 
     private int initWidth = 900;
-    private int initHeight = 800;
+    private int initHeight = 650;
 
     public void settings() {
         initializeImageSource(args);
