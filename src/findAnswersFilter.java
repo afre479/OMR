@@ -65,7 +65,7 @@ public class findAnswersFilter implements PixelFilter {
                     count+=3;
                 }else if(grid[j][k]<10){
                     count+=2;
-                }else if(grid[j][k]<20){
+                }else if(grid[j][k]<15){
                     count++;
                 }
             }
