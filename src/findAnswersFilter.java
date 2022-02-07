@@ -2,6 +2,10 @@ import Interfaces.PixelFilter;
 import core.DImage;
 
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class findAnswersFilter implements PixelFilter {
@@ -10,6 +14,7 @@ public class findAnswersFilter implements PixelFilter {
     private static int xDist=282;
     private static int yDist=37;
     private static int answerDist=38;
+    private String data;
 
     public findAnswersFilter() {
         System.out.println("Filter running...");
@@ -21,9 +26,24 @@ public class findAnswersFilter implements PixelFilter {
         System.out.println("Image is " + grid.length + " by "+ grid[0].length);
         ArrayList<Point> questions=findQuestions(img);
         for (int i = 1; i < questions.size()+1; i++) {
-            System.out.println("the answer to question "+i+" is "+findAnswer(questions.get(i-1), grid));
+           data+="the answer to question "+i+" is "+findAnswer(questions.get(i-1), grid)+"\n";
         }
+        writeDataToFile("answers.txt", data);
         return img;
+    }
+    public static void writeDataToFile(String filePath, String data) {
+        try (FileWriter f = new FileWriter(filePath, true);
+             BufferedWriter b = new BufferedWriter(f);
+             PrintWriter writer = new PrintWriter(b);) {
+
+
+            writer.println(data);
+
+
+        } catch (IOException error) {
+            System.err.println("There was a problem writing to the file: " + filePath);
+            error.printStackTrace();
+        }
     }
     public static ArrayList<Point> findQuestions( DImage img){
         ArrayList<Point>points=new ArrayList<>();
@@ -61,11 +81,11 @@ public class findAnswersFilter implements PixelFilter {
         int count=0;
         for (int j = (int) y; j <y+yDist ; j++) {
             for (int k = (int) x; k <x+answerDist ; k++) {
-                if(grid[j][k]<5){
+                if(grid[j][k]<10){
                     count+=3;
-                }else if(grid[j][k]<10){
+                }else if(grid[j][k]<20){
                     count+=2;
-                }else if(grid[j][k]<15){
+                }else if(grid[j][k]<30){
                     count++;
                 }
             }

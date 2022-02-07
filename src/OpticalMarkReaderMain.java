@@ -5,7 +5,7 @@ import processing.core.PImage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 
 // Author: David Dobervich (this is my edit)
@@ -25,6 +25,7 @@ public class OpticalMarkReaderMain {
 
 
 
+
         /*
         Your code here to...
         (1).  Load the pdf
@@ -34,6 +35,7 @@ public class OpticalMarkReaderMain {
          */
 
     }
+
 
 
 
