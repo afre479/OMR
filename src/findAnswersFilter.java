@@ -14,7 +14,6 @@ public class findAnswersFilter implements PixelFilter {
     private static int xDist=282;
     private static int yDist=37;
     private static int answerDist=38;
-    private static int numAnswers=5;
     private static int numQuestionsPerPage=25;
     private String data;
     private String id;

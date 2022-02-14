@@ -61,7 +61,7 @@ public class PDFHelper {
         return images;
     }
     public static void writeDataToFile(String filePath, String data) {
-        try (FileWriter f = new FileWriter(filePath, true);
+        try (FileWriter f = new FileWriter(filePath);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
 

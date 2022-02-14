@@ -11,24 +11,37 @@ import java.util.ArrayList;
 // Author: David Dobervich (this is my edit)
 // ANOTHER EDIT.
 public class OpticalMarkReaderMain {
+    private static int numStudentPages=6;
 
     public static void main(String[] args) {
         String pathToPdf = fileChooser();
-        PageResult[] studentAnswers = new PageResult[6];
+        PageResult[] studentAnswers = new PageResult[numStudentPages];
         System.out.println("Loading pdf at " + pathToPdf);
 
         PageResult answerKey = setFilter(0, pathToPdf);
-        for (int i = 1; i < 7; i++) {
+        for (int i = 1; i < numStudentPages+1; i++) {
             studentAnswers[i - 1] = setFilter(i, pathToPdf);
         }
         String data=gradeTest(studentAnswers,answerKey);
         PDFHelper.writeDataToFile("answers.csv",data);
+        String analysis=itemAnalysis(studentAnswers,answerKey);
+        PDFHelper.writeDataToFile("itemAnalysis.csv",analysis);
     }
 
     public static String itemAnalysis(PageResult[] studentAnswers, PageResult answerKey){
         String data="";
         ArrayList<String>correctAnswers=answerKey.getAnswers();
-        ArrayList<String>question=studentAnswers[0].getAnswers();
+        ArrayList<String>questions=studentAnswers[0].getAnswers();
+        for (int i = 1; i < questions.size()+1; i++) {
+            int count=0;
+            for (PageResult student:studentAnswers) {
+                ArrayList<String>answers=student.getAnswers();
+                if(answers.get(i-1).equals(correctAnswers.get(i-1))){
+                    count++;
+                }
+            }
+            data+="For question "+i+" the score for the students is "+count+"/"+studentAnswers.length+"\n";
+        }
 
 return data;
     }
