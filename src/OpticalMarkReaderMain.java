@@ -14,17 +14,54 @@ public class OpticalMarkReaderMain {
 
     public static void main(String[] args) {
         String pathToPdf = fileChooser();
+        PageResult[] studentAnswers = new PageResult[6];
         System.out.println("Loading pdf at " + pathToPdf);
-        for (int pg = 0; pg <7 ; pg++) {
-            PImage in = PDFHelper.getPageImage(pathToPdf,pg);
-            DImage img = new DImage(in);       // you can make a DImage from a PImage
-            System.out.println("Running filter on page " +pg);
-            findAnswersFilter filter = new findAnswersFilter();
-            writeDataToFile("answers.txt", "Answers for page "+pg);
-            filter.processImage(img);
-            writeDataToFile("answers.txt", filter.getData());
 
+        PageResult answerKey = setFilter(0, pathToPdf);
+        for (int i = 1; i < 7; i++) {
+            studentAnswers[i - 1] = setFilter(i, pathToPdf);
         }
+        String data=gradeTest(studentAnswers,answerKey);
+        PDFHelper.writeDataToFile("answers.csv",data);
+    }
+
+    public static String itemAnalysis(PageResult[] studentAnswers, PageResult answerKey){
+        String data="";
+        ArrayList<String>correctAnswers=answerKey.getAnswers();
+        ArrayList<String>question=studentAnswers[0].getAnswers();
+
+return data;
+    }
+
+public static String gradeTest(PageResult[] studentAnswers, PageResult answerKey){
+        String data="";
+        ArrayList<String>correctAnswers=answerKey.getAnswers();
+    for (PageResult student:studentAnswers){
+        int correctNum=0;
+        data+="Grading for student "+student.getStudentId()+": \n";
+        ArrayList<String>answers=student.getAnswers();
+        for (int i = 1; i < answers.size()+1; i++) {
+            if( answers.get(i-1).equals(correctAnswers.get(i-1))){
+                data+="Question "+i+" is correct.\n";
+                correctNum++;
+            }else{
+                data+="Question "+i+" is wrong.\n";
+            }
+        }
+        data+="Student "+student.getStudentId()+" got "+correctNum+" answers correct out of "+answers.size()+" questions.\n";
+    }
+return data;
+}
+        public static PageResult setFilter(int pageNum, String pathToPdf){
+            PImage in = PDFHelper.getPageImage(pathToPdf,pageNum);
+            DImage img = new DImage(in);
+            System.out.println("Running filter on page " +pageNum);
+            findAnswersFilter filter = new findAnswersFilter();
+            filter.processImage(img);
+            PageResult result=filter.getResult();
+            return result;
+        }
+
 
 
 
@@ -37,21 +74,6 @@ public class OpticalMarkReaderMain {
         (4).  Output 2 csv files
          */
 
-    }
-    public static void writeDataToFile(String filePath, String data) {
-        try (FileWriter f = new FileWriter(filePath, true);
-             BufferedWriter b = new BufferedWriter(f);
-             PrintWriter writer = new PrintWriter(b);) {
-
-
-            writer.println(data);
-
-
-        } catch (IOException error) {
-            System.err.println("There was a problem writing to the file: " + filePath);
-            error.printStackTrace();
-        }
-    }
 
 
 

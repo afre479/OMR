@@ -1,9 +1,7 @@
 package FileIO;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +59,20 @@ public class PDFHelper {
         }
 
         return images;
+    }
+    public static void writeDataToFile(String filePath, String data) {
+        try (FileWriter f = new FileWriter(filePath, true);
+             BufferedWriter b = new BufferedWriter(f);
+             PrintWriter writer = new PrintWriter(b);) {
+
+
+            writer.println(data);
+
+
+        } catch (IOException error) {
+            System.err.println("There was a problem writing to the file: " + filePath);
+            error.printStackTrace();
+        }
     }
 
     public static PImage getPageImage(String pathtoPdf, int pageNum) {

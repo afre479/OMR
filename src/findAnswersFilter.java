@@ -14,53 +14,57 @@ public class findAnswersFilter implements PixelFilter {
     private static int xDist=282;
     private static int yDist=37;
     private static int answerDist=38;
+    private static int numAnswers=5;
+    private static int numQuestionsPerPage=25;
     private String data;
+    private String id;
+    ArrayList<String>answerDoc=new ArrayList<>();
 
     public findAnswersFilter() {
         System.out.println("Filter running...");
         data="";
+        id="";
     }
     public String getData(){
         return data;
+    }
+    public PageResult getResult(){
+        PageResult p=new PageResult();
+        p.setStudentId(id);
+        p.addAnswers(answerDoc);
+        return p;
+    }
+    public ArrayList<String> getAnswerDoc() {
+        return answerDoc;
     }
 
     @Override
     public DImage processImage(DImage img) {
         short[][] grid = img.getBWPixelGrid();
         System.out.println("Image is " + grid.length + " by "+ grid[0].length);
+        //id=findAnswer()
+
         ArrayList<Point> questions=findQuestions(img);
         for (int i = 1; i < questions.size()+1; i++) {
-           data+="the answer to question "+i+" is "+findAnswer(questions.get(i-1), grid)+"\n";
+            String answer=findAnswer(questions.get(i-1), grid, answerDist);
+           data+="the answer to question "+i+" is "+answer+"\n";
+           answerDoc.add(answer);
         }
-        //writeDataToFile("answers1.txt", data);
         return img;
     }
-    public static void writeDataToFile(String filePath, String data) {
-        try (FileWriter f = new FileWriter(filePath, true);
-             BufferedWriter b = new BufferedWriter(f);
-             PrintWriter writer = new PrintWriter(b);) {
 
-
-            writer.println(data);
-
-
-        } catch (IOException error) {
-            System.err.println("There was a problem writing to the file: " + filePath);
-            error.printStackTrace();
-        }
-    }
     public static ArrayList<Point> findQuestions( DImage img){
         ArrayList<Point>points=new ArrayList<>();
         Point firstQuestion=new Point(firstQuestionX,firstQuestionY);
         for (int x = firstQuestionX; x < img.getWidth(); x+=xDist) {
-            for (int y = firstQuestionY; y <firstQuestionY+yDist*25 ; y+=yDist) {
+            for (int y = firstQuestionY; y <firstQuestionY+yDist*numQuestionsPerPage ; y+=yDist) {
                 Point question=new Point(x,y);
                 points.add(question);
             }
         }
         return points;
     }
-    private static String findAnswer(Point question, short[][]grid){
+    private static String findAnswer(Point question, short[][]grid, int answerDist){
 
         int a1count=getBlackPixels(question.getX(), question.getY(), grid );
         int a2count=getBlackPixels(question.getX()+answerDist,question.getY(),grid);
@@ -85,15 +89,19 @@ public class findAnswersFilter implements PixelFilter {
         int count=0;
         for (int j = (int) y; j <y+yDist ; j++) {
             for (int k = (int) x; k <x+answerDist ; k++) {
-                if(grid[j][k]<10){
+                if(grid[j][k]<5){
+                    count+=4;
+                }else if(grid[j][k]<10){
                     count+=3;
                 }else if(grid[j][k]<20){
                     count+=2;
-                }else if(grid[j][k]<30){
+                }else if (grid[j][k]<30){
                     count++;
                 }
             }
         }
         return count;
     }
+
+
 }
