@@ -18,6 +18,7 @@ public class findAnswersFilter implements PixelFilter {
     private static int answerDist=38;
     private static int numQuestionsPerPage=25;
     */
+
     //constant values for second PDF(3 pages)
     private static int firstQuestionX=87;
     private static int firstQuestionY=91;
@@ -25,8 +26,6 @@ public class findAnswersFilter implements PixelFilter {
     private static int yDist=48;
     private static int answerDist=24;
     private static int numQuestionsPer=19;
-//constant values for student id in second PDF
-
 
 
     private String data;
@@ -38,15 +37,18 @@ public class findAnswersFilter implements PixelFilter {
         data="";
         id="";
     }
+
     public String getData(){
         return data;
     }
+
     public PageResult getResult(){
         PageResult p=new PageResult();
         p.setStudentId(id);
         p.addAnswers(answerDoc);
         return p;
     }
+
     public ArrayList<String> getAnswerDoc() {
         return answerDoc;
     }
@@ -77,8 +79,8 @@ public class findAnswersFilter implements PixelFilter {
         }
         return points;
     }
-    private static String findAnswer(Point question, short[][]grid){
 
+    private static String findAnswer(Point question, short[][]grid){
         int a1count=getBlackPixels(question.getX(), question.getY(), grid );
         int a2count=getBlackPixels(question.getX()+answerDist,question.getY(),grid);
         int a3count=getBlackPixels(question.getX()+(2*answerDist),question.getY(),grid);
