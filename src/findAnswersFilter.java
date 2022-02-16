@@ -9,12 +9,26 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class findAnswersFilter implements PixelFilter {
-    private  static int firstQuestionX=128;
+    //constant values for first PDF(7 pages)
+    /*
+    private static int firstQuestionX=128;
     private static int firstQuestionY=456;
     private static int xDist=282;
     private static int yDist=37;
     private static int answerDist=38;
     private static int numQuestionsPerPage=25;
+    */
+    //constant values for second PDF(3 pages)
+    private static int firstQuestionX=87;
+    private static int firstQuestionY=91;
+    private static int xDist=9999;
+    private static int yDist=48;
+    private static int answerDist=24;
+    private static int numQuestionsPer=19;
+//constant values for student id in second PDF
+
+
+
     private String data;
     private String id;
     ArrayList<String>answerDoc=new ArrayList<>();
@@ -45,8 +59,8 @@ public class findAnswersFilter implements PixelFilter {
 
         ArrayList<Point> questions=findQuestions(img);
         for (int i = 1; i < questions.size()+1; i++) {
-            String answer=findAnswer(questions.get(i-1), grid, answerDist);
-           data+="the answer to question "+i+" is "+answer+"\n";
+            String answer=findAnswer(questions.get(i-1), grid);
+            System.out.println("the answer to question "+i+" is "+answer);
            answerDoc.add(answer);
         }
         return img;
@@ -56,14 +70,14 @@ public class findAnswersFilter implements PixelFilter {
         ArrayList<Point>points=new ArrayList<>();
         Point firstQuestion=new Point(firstQuestionX,firstQuestionY);
         for (int x = firstQuestionX; x < img.getWidth(); x+=xDist) {
-            for (int y = firstQuestionY; y <firstQuestionY+yDist*numQuestionsPerPage ; y+=yDist) {
+            for (int y = firstQuestionY; y <firstQuestionY+yDist*numQuestionsPer ; y+=yDist) {
                 Point question=new Point(x,y);
                 points.add(question);
             }
         }
         return points;
     }
-    private static String findAnswer(Point question, short[][]grid, int answerDist){
+    private static String findAnswer(Point question, short[][]grid){
 
         int a1count=getBlackPixels(question.getX(), question.getY(), grid );
         int a2count=getBlackPixels(question.getX()+answerDist,question.getY(),grid);
@@ -88,13 +102,15 @@ public class findAnswersFilter implements PixelFilter {
         int count=0;
         for (int j = (int) y; j <y+yDist ; j++) {
             for (int k = (int) x; k <x+answerDist ; k++) {
-                if(grid[j][k]<5){
-                    count+=4;
-                }else if(grid[j][k]<10){
+                if(grid[j][k]<10){
+                    count+=5;
+                }else if(grid[j][k]<50) {
+                    count += 4;
+                }else if(grid[j][k]<100){
                     count+=3;
-                }else if(grid[j][k]<20){
+                }else if(grid[j][k]<150){
                     count+=2;
-                }else if (grid[j][k]<30){
+                }else if (grid[j][k]<200){
                     count++;
                 }
             }

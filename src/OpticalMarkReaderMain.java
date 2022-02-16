@@ -11,7 +11,7 @@ import java.util.ArrayList;
 // Author: David Dobervich (this is my edit)
 // ANOTHER EDIT.
 public class OpticalMarkReaderMain {
-    private static int numStudentPages=6;
+    private static int numStudentPages=2;
 
     public static void main(String[] args) {
         String pathToPdf = fileChooser();
@@ -49,9 +49,10 @@ return data;
 public static String gradeTest(PageResult[] studentAnswers, PageResult answerKey){
         String data="";
         ArrayList<String>correctAnswers=answerKey.getAnswers();
+    int studentNum=1;
     for (PageResult student:studentAnswers){
         int correctNum=0;
-        data+="Grading for student "+student.getStudentId()+": \n";
+        data+="Grading for student "+studentNum+": \n";
         ArrayList<String>answers=student.getAnswers();
         for (int i = 1; i < answers.size()+1; i++) {
             if( answers.get(i-1).equals(correctAnswers.get(i-1))){
@@ -61,7 +62,8 @@ public static String gradeTest(PageResult[] studentAnswers, PageResult answerKey
                 data+="Question "+i+" is wrong.\n";
             }
         }
-        data+="Student "+student.getStudentId()+" got "+correctNum+" answers correct out of "+answers.size()+" questions.\n";
+        data+="Student "+studentNum+" got "+correctNum+" answers correct out of "+answers.size()+" questions.\n";
+        studentNum++;
     }
 return data;
 }
