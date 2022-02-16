@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 // Author: David Dobervich (this is my edit)
-// ANOTHER EDIT.
+// ANOTHER EDIT
 public class OpticalMarkReaderMain {
     private static int numStudentPages = 2;
 
