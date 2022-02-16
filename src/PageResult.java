@@ -11,10 +11,12 @@ ArrayList<String> answers=new ArrayList<>();
     public void addAnswers(ArrayList<String>data) {
         answers=data;
     }
-public ArrayList<String> getAnswers(){
+
+    public ArrayList<String> getAnswers(){
     return answers;
 }
-public String getStudentId(){
+
+    public String getStudentId(){
         return studentId;
 }
 }
